@@ -1,5 +1,9 @@
 name: Test, build and deploy
-on: [push,pull_request]
+
+on:
+  push:
+    tags:
+    - 'v*'
 
 jobs:
 
@@ -11,14 +15,13 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '1.17.4'
-          channel: 'dev'
       - run: flutter pub get
       - run: flutter  analyze
       # run  flutter widgets tests  and unit tests
       - run: flutter test --coverage
 
   build:
-    name: Build apk
+    name: Build APK
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -26,11 +29,19 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      - uses: actions/subosito/flutter-action@v1
+      - run: echo $SIGNING_KEY | base64 -d > android/app/key.jks
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+      - uses: subosito/flutter-action@v1
         with:
           flutter-version: '1.17.4'
       - run: flutter pub get
-      - run: flutter build apk -t lib/main.dart --split-per-abi
+      - run: flutter build apk --split-per-abi
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          ALIAS: ${{ secrets.ALIAS }}
+          KEY_PATH: key.jks
       - name: Create a Release APK
         uses: ncipollo/release-action@v1
         with:

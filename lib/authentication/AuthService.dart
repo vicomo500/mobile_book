@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:mobile_book/models/User.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:mobile_book/utils/Constants.dart';
-import 'package:http/http.dart' as http;
 
 class AuthService {
   static const String URL  = "https://my-json-server.typicode.com/vicomo500/FakeJSONServer/users";
