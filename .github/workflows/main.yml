@@ -32,7 +32,7 @@ jobs:
       - run: flutter pub get
       - run: flutter build apk -t lib/main.dart --split-per-abi
       - name: Create a Release APK
-        uses: ncipollo@release-action@v1
+        uses: ncipollo/release-action@v1
         with:
           artifacts: build/outputs/apk/release/*.apk
           token: ${{secrets.MBOK_DEPLOY_TOKEN}}
