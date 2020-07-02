@@ -12,7 +12,7 @@ jobs:
         with:
           flutter-version: '1.17.4'
       - run: flutter pub get
-      #- run: flutter  analyze
+      - run: flutter  analyze
       # run  flutter widgets tests  and unit tests
       - run: flutter test --coverage
 
